@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>OTP Verification</title>
+    <style>
+      .otp-container {
+        max-width: 400px;
+        margin: 50px auto;
+        text-align: center;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+      }
+      .otp-input {
+        width: 40px;
+        height: 40px;
+        margin: 5px;
+        text-align: center;
+        font-size: 18px;
+      }
+      .resend-link {
+        display: block;
+        margin-top: 20px;
+        color: #007bff;
+        text-decoration: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="otp-container">
+      <h2>Enter Verification Code</h2>
+      <p>Please enter the 6-digit code sent to your email</p>
+
+      <form action="/verify-otp" method="POST">
+        <div>
+          <input type="hidden" name="id" th:value="${id}" />
+          <input type="hidden" name="otp" id="combinedOtp" />
+
+          <input
+            type="text"
+            class="otp-input"
+            maxlength="1"
+            pattern="[0-9]"
+            required
+          />
+          <input
+            type="text"
+            class="otp-input"
+            maxlength="1"
+            pattern="[0-9]"
+            required
+          />
+          <input
+            type="text"
+            class="otp-input"
+            maxlength="1"
+            pattern="[0-9]"
+            required
+          />
+          <input
+            type="text"
+            class="otp-input"
+            maxlength="1"
+            pattern="[0-9]"
+            required
+          />
+          <input
+            type="text"
+            class="otp-input"
+            maxlength="1"
+            pattern="[0-9]"
+            required
+          />
+          <input
+            type="text"
+            class="otp-input"
+            maxlength="1"
+            pattern="[0-9]"
+            required
+          />
+        </div>
+        <button type="submit" style="margin-top: 20px">Verify OTP</button>
+      </form>
+
+      <a th:href="'/resend-otp/'+${id}" class="resend-link">Resend OTP</a>
+    </div>
+
+    <script>
+      // Auto-focus next input
+      const inputs = document.querySelectorAll(".otp-input");
+      const combinedOtpInput = document.getElementById("combinedOtp");
+      inputs.forEach((input, index) => {
+        input.addEventListener("input", function () {
+          if (this.value.length === 1 && index < inputs.length - 1) {
+            inputs[index + 1].focus();
+          }
+        });
+      });
+
+      // Combine OTP values
+      document.querySelector("form").addEventListener("submit", () => {
+        let combinedOtp = "";
+        inputs.forEach((input) => {
+          combinedOtp += input.value;
+        });
+        combinedOtpInput.value = combinedOtp;
+      });
+    </script>
+  </body>
+</html>

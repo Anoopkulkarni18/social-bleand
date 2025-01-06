@@ -1,5 +1,9 @@
 package com.socialBlend.socialBlend.dto;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.Transient;
 import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Email;
@@ -10,8 +14,11 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Data
+@Entity
 public class User {
-	
+	@Id
+	@GeneratedValue
+	private int id;
 	@Size(min=3,max=10,message="Characters length must be between 3 to 10")
 	private String firstname;
 	@Size(min=3,max=15,message="Characters length must be between 3 to 15")
@@ -23,6 +30,7 @@ public class User {
 	private String email;
 	@Pattern(regexp = "^.*(?=.{8,})(?=..*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=]).*$",message="It should contain atleast 8 charecter, one uppercase, one lowercase, one number and one speacial charecter")
 	private String password;
+	@Transient
 	@Pattern(regexp = "^.*(?=.{8,})(?=..*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=]).*$",message="It should contain atleast 8 charecter, one uppercase, one lowercase, one number and one speacial charecter")
 	private String confirmpassword;
 	@DecimalMin(value="6000000000")
@@ -30,4 +38,6 @@ public class User {
 	private long mobilenumber;
 	@NotNull
 	private String gender;
+	private int otp;
+	private boolean verified;
 }

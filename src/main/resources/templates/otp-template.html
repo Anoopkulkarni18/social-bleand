@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>OTP Verification</title>
+  </head>
+  <body
+    style="
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      margin: 0;
+      padding: 20px;
+    "
+  >
+    <div
+      style="
+        max-width: 600px;
+        margin: 0 auto;
+        background-color: #f9f9f9;
+        padding: 20px;
+        border-radius: 5px;
+      "
+    >
+      <h2 style="color: #333; text-align: center">OTP Verification</h2>
+      <p style="color: #666">Dear <span th:text="${name}"></span>,</p>
+      <p style="color: #666">
+        Your One Time Password (OTP) for verification is:
+      </p>
+      <div
+        style="
+          background-color: #ffffff;
+          padding: 15px;
+          text-align: center;
+          border-radius: 5px;
+          margin: 20px 0;
+        "
+      >
+        <h1 style="color: #007bff; margin: 0; letter-spacing: 5px">
+          <span th:text="${otp}"></span>
+        </h1>
+      </div>
+      <p style="color: #666">
+        This OTP is valid for 5 minutes. Please do not share this OTP with
+        anyone.
+      </p>
+      <p style="color: #666">
+        If you didn't request this OTP, please ignore this email.
+      </p>
+      <p style="color: #666">Best regards,<br />SocialBlend Team</p>
+    </div>
+  </body>
+</html>
