@@ -7,10 +7,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.socialBlend.socialBlend.dto.Post;
 import com.socialBlend.socialBlend.dto.User;
 import com.socialBlend.socialBlend.helper.AES;
+import com.socialBlend.socialBlend.helper.CloudinaryHelper;
 import com.socialBlend.socialBlend.helper.EmailSender;
+import com.socialBlend.socialBlend.repository.PostRepository;
 import com.socialBlend.socialBlend.repository.UserRepository;
 
 import jakarta.servlet.http.HttpSession;
@@ -24,6 +28,11 @@ public class UserService {
 
 	@Autowired
 	EmailSender emailSender;
+
+	@Autowired
+	CloudinaryHelper cloudinaryHelper;
+	@Autowired
+	PostRepository postRepository;
 
 	public String loadRegister(ModelMap map, User user) {
 		map.put("user", user);
@@ -92,17 +101,19 @@ public class UserService {
 		return "redirect:/otp/" + user.getId();
 	}
 
-	public String login(String username, String password,HttpSession session) {
-		User user=repository.findByUsername(username);
-		if(user==null) {
+	public String login(String username, String password, HttpSession session) {
+		User user = repository.findByUsername(username);
+
+		if (user == null) {
 			session.setAttribute("fail", "User not found");
 			return "redirect:/login";
-		}
-		else {
-			if(AES.decrypt(user.getPassword()).equals(password)) {
-				if(user.isVerified()) {
+		} else {
+			if (AES.decrypt(user.getPassword()).equals(password)) {
+				if (user.isVerified()) {
+					session.setAttribute("user", user);
+					session.setAttribute("pass", "login success");
 					return "redirect:/home";
-				}else {
+				} else {
 					int otp = new Random().nextInt(100000, 1000000);
 					emailSender.sendOtp(user.getEmail(), user.getFirstname(), otp);
 					System.err.println(otp);
@@ -111,7 +122,7 @@ public class UserService {
 					session.setAttribute("", session);
 					return "redirect:/otp/" + user.getId();
 				}
-			}else {
+			} else {
 				session.setAttribute("fail", "Incorrect password");
 				return "redirect:/login";
 			}
@@ -120,11 +131,11 @@ public class UserService {
 
 	public String loadHome(HttpSession session) {
 		User user = (User) session.getAttribute("user");
-		if(user==null) {
+		if (user == null) {
 			session.setAttribute("fail", "Invalid sesssion");
 			return "redirect:/login";
-		}else {
-			return "redirect:/home";
+		} else {
+			return "home.html";
 		}
 	}
 
@@ -133,6 +144,62 @@ public class UserService {
 		session.setAttribute("pass", "Logout success");
 		return "redirect:/login";
 	}
-	
+
+	public String loadProfile(HttpSession session) {
+		User user = (User) session.getAttribute("user");
+		if (user == null) {
+			session.setAttribute("fail", "Invalid sesssion");
+			return "redirect:/login";
+		} else {
+			return "profile.html";
+		}
+	}
+
+	public String editProfile(HttpSession session) {
+		User user = (User) session.getAttribute("user");
+		if (user == null) {
+			session.setAttribute("fail", "Invalid sesssion");
+			return "redirect:/login";
+		} else {
+			return "edit-profile.html";
+		}
+	}
+
+	public String updateProfile(MultipartFile image, String bio, HttpSession session) {
+		User user = (User) session.getAttribute("user");
+		if (user == null) {
+			session.setAttribute("fail", "Invalid sesssion");
+			return "redirect:/login";
+		} else {
+			user.setBio(bio);
+			user.setImageUrl(cloudinaryHelper.saveImg(image));
+			repository.save(user);
+			return "redirect:/profile";
+		}
+	}
+
+	public String loadAddNewPost(HttpSession session) {
+		User user = (User) session.getAttribute("user");
+		if (user == null) {
+			session.setAttribute("fail", "Invalid sesssion");
+			return "redirect:/login";
+		} else {
+			return "add-new-post.html";
+		}
+	}
+
+	public String addPost(MultipartFile image, Post post, HttpSession session) {
+		User user = (User) session.getAttribute("user");
+		if (user == null) {
+			session.setAttribute("fail", "Invalid sesssion");
+			return "redirect:/login";
+		} else {
+			post.setImageUrl(cloudinaryHelper.updateImg(image));
+			postRepository.save(post);
+			session.setAttribute("post", post);
+			session.setAttribute("pass", "Added Post Successfully");
+			return "redirect:/profile";
+		}
+	}
 
 }

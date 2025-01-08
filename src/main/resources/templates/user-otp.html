@@ -33,6 +33,11 @@
       <h2>Enter Verification Code</h2>
       <p>Please enter the 6-digit code sent to your email</p>
 
+      <div class="message">
+        <h3 style="color: green" th:text="${session.pass}"></h3>
+        <h3 style="color: red" th:text="${session.fail}"></h3>
+        <th:block th:text="${@messageRemover.remove()}"></th:block>
+      </div>
       <form action="/verify-otp" method="POST">
         <div>
           <input type="hidden" name="id" th:value="${id}" />

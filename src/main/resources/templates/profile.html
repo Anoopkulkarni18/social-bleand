@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="JspGram - Profile Page" />
+    <title>SocialBlend - Profile</title>
+    <!-- <link rel="icon" type="image/png" href="/images/favicon.png"> -->
+    <style>
+    </style>
+    <style>
+      body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background-color: #fafafa;
+      }
+
+      .navbar {
+        background-color: white;
+        border-bottom: 1px solid #dbdbdb;
+        padding: 10px 0;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
+
+      .nav-content {
+        max-width: 975px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 20px;
+      }
+
+      .logo img {
+        height: 40px;
+      }
+
+      .profile-button,
+      .logout-button {
+        padding: 8px 16px;
+        margin-left: 10px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+
+      .profile-button {
+        background-color: #0095f6;
+        color: white;
+      }
+
+      .logout-button {
+        background-color: #ed4956;
+        color: white;
+      }
+
+      .profile-container {
+        max-width: 935px;
+        margin: 30px auto;
+        padding: 0 20px;
+      }
+
+      .profile-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 44px;
+      }
+
+      .profile-picture {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        margin-right: 100px;
+      }
+
+      .profile-info h1 {
+        margin: 0 0 10px;
+        font-size: 28px;
+      }
+
+      .profile-info p {
+        margin: 0 0 10px;
+        color: #262626;
+      }
+
+      .edit-profile-btn {
+        padding: 5px 9px;
+        background-color: transparent;
+        border: 1px solid #dbdbdb;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+
+      .stats-container {
+        display: flex;
+        justify-content: space-around;
+        border-top: 1px solid #dbdbdb;
+        border-bottom: 1px solid #dbdbdb;
+        padding: 20px 0;
+        margin-bottom: 20px;
+      }
+
+      .stat-item {
+        text-align: center;
+      }
+
+      .stat-item h3 {
+        margin: 0;
+        font-size: 16px;
+        color: #8e8e8e;
+      }
+
+      .stat-item span {
+        font-size: 18px;
+        font-weight: bold;
+      }
+
+      .add-post-btn {
+        display: block;
+        margin: 20px auto;
+        padding: 10px 20px;
+        background-color: #0095f6;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+
+      .add-post-btn:hover {
+        background-color: #0086e0;
+      }
+      .postButton {
+        text-decoration: none;
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="nav-content">
+        <div class="logo">
+          <a href="/home"
+            ><img src="/images/jspgram-logo.png" alt="JspGram Logo"
+          /></a>
+        </div>
+        <div class="nav-right">
+          <a href="/home"><button class="profile-button">Home</button></a>
+          <a href="/logout"><button class="logout-button">Logout</button></a>
+        </div>
+      </div>
+    </nav>
+
+    <main class="profile-container">
+      <section class="profile-header">
+        <img
+          th:if="${session.user.imageUrl == null}"
+          src="https://static.vecteezy.com/system/resources/previews/019/879/186/non_2x/user-icon-on-transparent-background-free-png.png"
+          alt="Profile Picture"
+          class="profile-picture"
+        />
+        <img
+          th:if="${session.user.imageUrl != null}"
+          th:src="${session.user.imageUrl}"
+          alt="Profile Picture"
+          class="profile-picture"
+        />
+        <div class="profile-info">
+          <h1 th:text="${session.user.username}"></h1>
+          <p th:text="${session.user.email}"></p>
+          <p th:if="${session.user.bio}">
+            Bio: <span th:text="${session.user.bio}"></span>
+          </p>
+          <div class="profile-actions">
+            <a href="/edit-profile"
+              ><button class="edit-profile-btn">Edit Profile</button></a
+            >
+          </div>
+        </div>
+      </section>
+
+      <section class="stats-container">
+        <div class="stat-item">
+          <h3>Posts</h3>
+          <span>0</span>
+        </div>
+        <div class="stat-item">
+          <h3>Followers</h3>
+          <span>0</span>
+        </div>
+        <div class="stat-item">
+          <h3>Following</h3>
+          <span>0</span>
+        </div>
+      </section>
+
+      <a id="postButton" href="/loadAddNewPost">
+        <button type="submit" class="add-post-btn">Add New Post</button></a
+      >
+      <div>
+        <!-- <img
+          th:if="${session.post.imageUrl == null}"
+          src="https://static.vecteezy.com/system/resources/previews/019/879/186/non_2x/user-icon-on-transparent-background-free-png.png"
+          alt="Post"
+          class="profile-picture"
+        />
+        <img
+          th:if="${session.post.imageUrl != null}"
+          th:src="${session.post.imageUrl}"
+          alt="Post"
+          class="profile-picture"
+        /> -->
+      </div>
+    </main>
+  </body>
+</html>

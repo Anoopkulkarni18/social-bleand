@@ -8,7 +8,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.socialBlend.socialBlend.dto.Post;
 import com.socialBlend.socialBlend.dto.User;
 import com.socialBlend.socialBlend.service.UserService;
 
@@ -62,5 +64,27 @@ public class AppController {
 	@GetMapping("/logout")
 	public String logout(HttpSession session) {
 		return service.logout(session);
+	}
+	@GetMapping("/profile")
+	public String loadProfile(HttpSession session) {
+		return service.loadProfile(session);
+	}
+	@GetMapping("/edit-profile")
+	public String editProfile(HttpSession session) {
+		return service.editProfile(session);
+	}
+	
+	@PostMapping("/update-profile")
+	public String updateProfile(@RequestParam MultipartFile image,@RequestParam String bio,HttpSession session) {
+		return service.updateProfile(image,bio,session);
+	}
+	
+	@GetMapping("/loadAddNewPost")
+	public String loadAddNewPost(HttpSession session) {
+		return service.loadAddNewPost(session);
+	}
+	@PostMapping("/add-post")
+	public String addPost(@RequestParam MultipartFile image,Post post,HttpSession session) {
+		return service.addPost(image,post,session);
 	}
 }
