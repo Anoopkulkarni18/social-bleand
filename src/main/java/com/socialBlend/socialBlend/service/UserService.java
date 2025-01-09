@@ -1,5 +1,6 @@
 package com.socialBlend.socialBlend.service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
@@ -65,7 +66,7 @@ public class UserService {
 			System.err.println(otp);
 			user.setOtp(otp);
 			repository.save(user);
-			session.setAttribute("", session);
+			session.setAttribute("pass", "registered successfully");
 			return "redirect:/otp/" + user.getId();
 		}
 	}
@@ -145,12 +146,16 @@ public class UserService {
 		return "redirect:/login";
 	}
 
-	public String loadProfile(HttpSession session) {
+	public String loadProfile(HttpSession session, ModelMap map) {
 		User user = (User) session.getAttribute("user");
 		if (user == null) {
 			session.setAttribute("fail", "Invalid sesssion");
 			return "redirect:/login";
 		} else {
+			List<Post> posts = postRepository.findByUser(user);
+			if (!posts.isEmpty()) {
+				map.put("posts", posts);
+			}
 			return "profile.html";
 		}
 	}
@@ -195,11 +200,29 @@ public class UserService {
 			return "redirect:/login";
 		} else {
 			post.setImageUrl(cloudinaryHelper.updateImg(image));
+			System.err.println(post.getImageUrl());
+			post.setUser(user);
 			postRepository.save(post);
-			session.setAttribute("post", post);
 			session.setAttribute("pass", "Added Post Successfully");
 			return "redirect:/profile";
 		}
+	}
+
+	public String deletePost( int pid, HttpSession session,ModelMap map) {
+		User user=(User) session.getAttribute("user");
+		if(user==null) {
+			session.setAttribute("fail", "Invalid sesssion");
+			return "redirect:/login";
+		}else {
+			Post post=postRepository.findById(pid).get();            
+			postRepository.delete(post);
+			List<Post> posts = postRepository.findByUser(user);
+			if (!posts.isEmpty()) {
+				map.put("posts", posts);
+			}
+			return "profile.html"; 
+		}
+		
 	}
 
 }

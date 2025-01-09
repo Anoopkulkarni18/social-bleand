@@ -6,8 +6,7 @@
     <meta name="description" content="JspGram - Profile Page" />
     <title>SocialBlend - Profile</title>
     <!-- <link rel="icon" type="image/png" href="/images/favicon.png"> -->
-    <style>
-    </style>
+    <style></style>
     <style>
       body {
         margin: 0;
@@ -197,19 +196,26 @@
       <a id="postButton" href="/loadAddNewPost">
         <button type="submit" class="add-post-btn">Add New Post</button></a
       >
-      <div>
-        <!-- <img
-          th:if="${session.post.imageUrl == null}"
-          src="https://static.vecteezy.com/system/resources/previews/019/879/186/non_2x/user-icon-on-transparent-background-free-png.png"
-          alt="Post"
-          class="profile-picture"
-        />
-        <img
-          th:if="${session.post.imageUrl != null}"
-          th:src="${session.post.imageUrl}"
-          alt="Post"
-          class="profile-picture"
-        /> -->
+      <div th:if="${posts}">
+        <h1>My Posts</h1>
+        <div th:each="post:${posts}">
+          <img
+            th:src="${post.imageUrl}"
+            alt=""
+            height="150px"
+            width="100px"
+          /><br />
+          <!-- <input type="text" th:value="${post.id}" hidden /> -->
+          <span th:text="${post.caption}"></span>
+          <span th:text="${post.postedTime}"></span>
+          <button>Edit</button>
+          <a
+            th:href="@{/delete(postId=${post.id})}"
+            onclick="return confirm('Are you sure you want to delete this post?');"
+          >
+            <button>Delete</button></a
+          >
+        </div>
       </div>
     </main>
   </body>

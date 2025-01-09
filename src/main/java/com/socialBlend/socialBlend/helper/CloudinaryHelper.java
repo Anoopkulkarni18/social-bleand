@@ -13,7 +13,7 @@ import com.cloudinary.utils.ObjectUtils;
 public class CloudinaryHelper {
 
     @Value("${CLOUDINARY_URL}")
-    private String url; // Keep field injection
+    private String url;
 
     public String saveImg(MultipartFile file) {
         Cloudinary cloudinary = new Cloudinary(url);
@@ -31,9 +31,9 @@ public class CloudinaryHelper {
         try {
             map = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.asMap("post", "socialBlend"));
         } catch (Exception e) {
-            e.printStackTrace(); // Consider using a logging framework
+            e.printStackTrace(); 
         }
-        return map != null ? (String) map.get("url") : null; // Use the correct key to retrieve the URL
+        return map != null ? (String) map.get("url") : null; 
     }
   
 }

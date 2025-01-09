@@ -53,38 +53,49 @@ public class AppController {
 	public String resendOtp(@PathVariable int id, HttpSession session) {
 		return service.resendOtp(id, session);
 	}
+
 	@PostMapping("/login")
-	public String login(@RequestParam String username,@RequestParam String password,HttpSession session) {
-		return service.login(username,password,session);
+	public String login(@RequestParam String username, @RequestParam String password, HttpSession session) {
+		return service.login(username, password, session);
 	}
+
 	@GetMapping("/home")
 	public String loadHome(HttpSession session) {
 		return service.loadHome(session);
 	}
+
 	@GetMapping("/logout")
 	public String logout(HttpSession session) {
 		return service.logout(session);
 	}
+
 	@GetMapping("/profile")
-	public String loadProfile(HttpSession session) {
-		return service.loadProfile(session);
+	public String loadProfile(HttpSession session,ModelMap map) {
+		return service.loadProfile(session,map);
 	}
+
 	@GetMapping("/edit-profile")
 	public String editProfile(HttpSession session) {
 		return service.editProfile(session);
 	}
-	
+
 	@PostMapping("/update-profile")
-	public String updateProfile(@RequestParam MultipartFile image,@RequestParam String bio,HttpSession session) {
-		return service.updateProfile(image,bio,session);
+	public String updateProfile(@RequestParam MultipartFile image, @RequestParam String bio, HttpSession session) {
+		return service.updateProfile(image, bio, session);
 	}
-	
+
 	@GetMapping("/loadAddNewPost")
 	public String loadAddNewPost(HttpSession session) {
 		return service.loadAddNewPost(session);
 	}
+
 	@PostMapping("/add-post")
-	public String addPost(@RequestParam MultipartFile image,Post post,HttpSession session) {
-		return service.addPost(image,post,session);
+	public String addPost(@RequestParam MultipartFile image, Post post, HttpSession session) {
+		return service.addPost(image, post, session);
 	}
+	@GetMapping("/delete")
+		public String deletePost(@RequestParam int postId, HttpSession session,ModelMap map) {
+			return service.deletePost(postId,session,map);
+		}
+	
 }
